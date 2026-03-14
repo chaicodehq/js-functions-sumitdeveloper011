@@ -81,11 +81,16 @@ export function createElection(candidates) {
       if (!registeredVoters.has(voterId)) {
         return onError("Voter not registered");
       }
-      if (!votes[candidateId]) {
+      const candidateExists = candidates.some(c => c.id === candidateId);
+      if (!candidateExists) {
         return onError("Candidate not found");
       }
-      if (Object.values(votes).some(v => v[voterId])) {
+      const alreadyVoted = candidates.some(c => votes[c.id] && votes[c.id][voterId]);
+      if (alreadyVoted) {
         return onError("Voter has already voted");
+      }
+      if (!votes[candidateId]) {
+        votes[candidateId] = {};
       }
       votes[candidateId][voterId] = true;
       return onSuccess({ voterId, candidateId });
@@ -104,7 +109,8 @@ export function createElection(candidates) {
     },
     getWinner() {
       const results = this.getResults();
-      if (results.length === 0) {
+      const totalVotes = results.reduce((sum, r) => sum + r.votes, 0);
+      if (totalVotes === 0) {
         return null;
       }
       const maxVotes = Math.max(...results.map(r => r.votes));

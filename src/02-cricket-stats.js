@@ -41,7 +41,7 @@ export const calcStrikeRate = (runs, balls) => {
   if (balls <= 0 || runs < 0) {
     return 0;
   }
-  return Math.round((runs / balls) * 100);
+  return Number(((runs / balls) * 100).toFixed(2));
 };
 
 export const calcEconomy = (runsConceded, overs) => {
@@ -71,13 +71,13 @@ export const getPlayerCard = (player) => {
   const strikeRate = calcStrikeRate(player.runs, player.balls);
   const economy = calcEconomy(player.runsConceded, player.overs);
   const battingAvg = calcBattingAvg(player.totalRuns, player.innings, player.notOuts);
-  const isAllRounder = isAllRounder(battingAvg, economy);
+  const allRounder = isAllRounder(battingAvg, economy);
 
   return {
     name: player.name,
     strikeRate,
     economy,
     battingAvg,
-    isAllRounder
+    isAllRounder: allRounder
   };
 };

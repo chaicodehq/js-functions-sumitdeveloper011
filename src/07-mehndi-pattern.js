@@ -104,14 +104,18 @@ export function isPalindrome(str) {
 export function generatePattern(n) {
   if (typeof n !== "number" || n <= 0 || !Number.isInteger(n)) {
     return [];
-  } 
-  function buildPattern(level) {
+  }
+  function buildUp(level) {
     if (level > n) {
       return [];
     }
-    const current = repeatChar("*", level);
-    const next = buildPattern(level + 1);
-    return [current, ...next, current];
+    return [repeatChar("*", level), ...buildUp(level + 1)];
   }
-  return buildPattern(1);
+  function buildDown(level) {
+    if (level < 1) {
+      return [];
+    }
+    return [repeatChar("*", level), ...buildDown(level - 1)];
+  }
+  return [...buildUp(1), ...buildDown(n - 1)];
 }

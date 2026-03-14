@@ -46,10 +46,10 @@
  */
 export function createDialogueWriter(genre) {
   const templates = {
-    action: `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`,
-    romance: `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`,
-    comedy: `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`,
-    drama: `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+    action: "${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'",
+    romance: "${hero} whispers: '${villain}, tum mere liye sab kuch ho'",
+    comedy: "${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'",
+    drama: "${hero} cries: '${villain}, tune mera sab kuch cheen liya!'"
   };
 
   if (!templates[genre]) {
@@ -60,8 +60,8 @@ export function createDialogueWriter(genre) {
     if (!hero || !villain) {
       return "...";
     }
-    return templates[genre].replace("${hero}", hero).replace("${villain}", villain);
-  };  
+    return templates[genre].replace(/\$\{hero\}/g, hero).replace(/\$\{villain\}/g, villain);
+  };
 }
 
 export function createTicketPricer(basePrice) {
